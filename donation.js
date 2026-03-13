@@ -14,7 +14,7 @@
 
 // ─── CONFIG ───────────────────────────────────────────────────────────────
 /** Ganti dengan alamat ETH penerima donasi kamu */
-const DONATION_RECIPIENT = '0x742d35Cc6634C0532925a3b8D4C9b6A26f12345';
+const DONATION_RECIPIENT = '0x715d4eB4a21e2e50f4F0083e3C05D1042B8FaC05';
 
 /** Label nama penerima yang tampil di UI */
 const RECIPIENT_LABEL = 'KriptoEdu Fund';
