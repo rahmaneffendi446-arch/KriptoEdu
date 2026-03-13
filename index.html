@@ -36,9 +36,7 @@
 </head>
 <body class="bg-crypto-dark text-white font-sans antialiased">
 
-  <!-- ═══════════════════════════════════════════
-       TOAST NOTIFICATION (wallet.js)
-  ═══════════════════════════════════════════ -->
+  <!-- TOAST NOTIFICATION -->
   <div id="wallet-toast"
     style="opacity:0; transform:translateY(16px); pointer-events:none;"
     class="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3 rounded-2xl border backdrop-blur-md shadow-xl transition-all duration-300">
@@ -47,30 +45,25 @@
     <button onclick="hideToast()" class="ml-2 text-white/40 hover:text-white/80 text-lg leading-none transition">×</button>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       NAVBAR
-  ═══════════════════════════════════════════ -->
+  <!-- NAVBAR -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-crypto-dark/80 backdrop-blur-md border-b border-white/10">
     <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-
-      <!-- Logo -->
       <a href="#" class="flex items-center gap-2 font-black text-xl tracking-tight">
         <span class="text-2xl">₿</span>
         <span class="bg-gradient-to-r from-crypto-blue to-crypto-purple bg-clip-text text-transparent">KriptoEdu</span>
       </a>
-
-      <!-- Menu -->
-      <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+      <ul class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-300">
         <li><a href="#belajar"    class="hover:text-white transition">Belajar</a></li>
         <li><a href="#blockchain" class="hover:text-white transition">Blockchain</a></li>
         <li><a href="#bitcoin"    class="hover:text-white transition">Bitcoin</a></li>
         <li><a href="#modul"      class="hover:text-white transition">Modul</a></li>
+        <li>
+          <button onclick="openDonationModal()" class="text-crypto-gold hover:text-yellow-300 transition font-bold flex items-center gap-1">
+            💛 Donasi
+          </button>
+        </li>
       </ul>
-
-      <!-- Navbar Right: Connect Wallet + Mulai Gratis -->
       <div class="hidden md:flex items-center gap-3">
-
-        <!-- ★ CONNECT WALLET BUTTON ★ -->
         <button
           id="wallet-btn"
           type="button"
@@ -79,29 +72,22 @@
           <span id="wallet-btn-dot" class="w-2 h-2 rounded-full bg-white/50"></span>
           <span id="wallet-btn-label"><span>🔗 Connect Wallet</span></span>
         </button>
-
-        <!-- Mulai Gratis -->
         <a href="#mulai" class="inline-flex items-center gap-1 border border-white/20 hover:bg-white/5 text-white text-sm font-semibold px-4 py-2 rounded-full transition">
           Mulai Gratis →
         </a>
-
       </div>
-
-      <!-- Mobile: hanya tampilkan wallet btn -->
-      <button
-        id="wallet-btn-mobile"
-        onclick="document.getElementById('wallet-btn').click()"
-        class="md:hidden flex items-center gap-2 bg-crypto-purple/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full"
-      >
-        🔗 Wallet
-      </button>
-
+      <div class="md:hidden flex items-center gap-2">
+        <button onclick="openDonationModal()" class="flex items-center gap-1 bg-crypto-gold/20 text-crypto-gold text-xs font-bold px-3 py-1.5 rounded-full">💛</button>
+        <button
+          id="wallet-btn-mobile"
+          onclick="document.getElementById('wallet-btn').click()"
+          class="flex items-center gap-2 bg-crypto-purple/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full"
+        >🔗 Wallet</button>
+      </div>
     </div>
   </nav>
 
-  <!-- ═══════════════════════════════════════════
-       HERO
-  ═══════════════════════════════════════════ -->
+  <!-- HERO -->
   <section class="min-h-screen flex items-center justify-center px-6 pt-24 pb-16 text-center relative overflow-hidden">
     <div class="absolute inset-0 -z-10">
       <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-crypto-purple/20 rounded-full blur-[120px]"></div>
@@ -122,19 +108,15 @@
         <a href="#blockchain" class="bg-gradient-to-r from-crypto-blue to-crypto-purple text-white font-bold px-8 py-4 rounded-full hover:opacity-90 transition text-lg shadow-lg shadow-purple-900/40">
           Mulai Belajar Sekarang
         </a>
-        <a href="#modul" class="border border-white/20 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/5 transition text-lg">
-          Lihat Kurikulum
-        </a>
+        <button onclick="openDonationModal()" class="flex items-center justify-center gap-2 border border-crypto-gold/40 text-crypto-gold font-semibold px-8 py-4 rounded-full hover:bg-crypto-gold/10 transition text-lg">
+          💛 Dukung Kami
+        </button>
       </div>
-
-      <!-- Stats + wallet info badge -->
       <div class="mt-14 flex flex-wrap justify-center gap-10 text-center">
         <div><p class="text-3xl font-black text-white">10K+</p><p class="text-slate-500 text-sm mt-1">Pelajar Aktif</p></div>
         <div><p class="text-3xl font-black text-white">50+</p><p class="text-slate-500 text-sm mt-1">Modul Gratis</p></div>
         <div><p class="text-3xl font-black text-white">100%</p><p class="text-slate-500 text-sm mt-1">Berbahasa Indonesia</p></div>
       </div>
-
-      <!-- Wallet address badge (muncul setelah connect) -->
       <div id="wallet-address-badge" class="hidden mt-6 inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-mono px-4 py-2 rounded-full">
         <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
         <span></span>
@@ -142,126 +124,65 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       SECTION 1 — APA ITU BLOCKCHAIN?
-  ═══════════════════════════════════════════ -->
+  <!-- SECTION 1 — APA ITU BLOCKCHAIN? -->
   <section id="blockchain" class="py-24 px-6 relative overflow-hidden">
     <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-crypto-blue/10 rounded-full blur-[100px] -z-10"></div>
     <div class="max-w-5xl mx-auto">
-      <div class="flex items-center gap-3 mb-3">
-        <span class="text-xs font-bold tracking-widest text-crypto-blue uppercase">Modul 01</span>
-        <span class="h-px flex-1 max-w-[60px] bg-crypto-blue/40"></span>
-      </div>
+      <div class="flex items-center gap-3 mb-3"><span class="text-xs font-bold tracking-widest text-crypto-blue uppercase">Modul 01</span><span class="h-px flex-1 max-w-[60px] bg-crypto-blue/40"></span></div>
       <h2 class="text-4xl md:text-5xl font-black mb-4">⛓️ Apa Itu <span class="text-crypto-blue">Blockchain</span>?</h2>
-      <p class="text-slate-400 text-lg max-w-2xl mb-12 leading-relaxed">
-        Kamu pernah denger kata "blockchain" tapi bingung maksudnya apa? Tenang, kita bahas dengan cara yang santai dan gampang dipahami.
-      </p>
+      <p class="text-slate-400 text-lg max-w-2xl mb-12 leading-relaxed">Kamu pernah denger kata "blockchain" tapi bingung maksudnya apa? Tenang, kita bahas dengan cara yang santai dan gampang dipahami.</p>
       <div class="bg-crypto-card rounded-3xl p-8 md:p-10 border border-crypto-blue/20 mb-8">
         <div class="flex items-start gap-5">
           <div class="text-5xl shrink-0">📒</div>
           <div>
             <h3 class="text-2xl font-bold mb-3">Bayangin Buku Catatan Ajaib</h3>
-            <p class="text-slate-300 leading-relaxed text-base">
-              Coba bayangin kamu punya sebuah <strong class="text-white">buku catatan</strong> yang isinya catatan transaksi uang. Setiap kali ada transaksi baru (misalnya kamu transfer ke teman), transaksi itu ditulis di buku tersebut.
-            </p>
-            <p class="text-slate-300 leading-relaxed text-base mt-3">
-              Yang bikin <strong class="text-crypto-blue">blockchain spesial</strong>: buku catatan ini <em>bukan cuma dipegang satu orang</em>, tapi disimpan oleh <strong class="text-white">ribuan komputer</strong> di seluruh dunia secara bersamaan. Kalau ada yang coba curang dan ubah catatannya, semua komputer lain langsung tahu dan menolaknya! 🚫
-            </p>
+            <p class="text-slate-300 leading-relaxed text-base">Coba bayangin kamu punya sebuah <strong class="text-white">buku catatan</strong> yang isinya catatan transaksi uang. Setiap kali ada transaksi baru (misalnya kamu transfer ke teman), transaksi itu ditulis di buku tersebut.</p>
+            <p class="text-slate-300 leading-relaxed text-base mt-3">Yang bikin <strong class="text-crypto-blue">blockchain spesial</strong>: buku catatan ini <em>bukan cuma dipegang satu orang</em>, tapi disimpan oleh <strong class="text-white">ribuan komputer</strong> di seluruh dunia secara bersamaan. Kalau ada yang coba curang dan ubah catatannya, semua komputer lain langsung tahu dan menolaknya! 🚫</p>
           </div>
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-5 mb-10">
-        <div class="bg-crypto-card/60 rounded-2xl p-6 border border-white/5">
-          <div class="w-10 h-10 rounded-xl bg-crypto-blue/20 flex items-center justify-center text-xl mb-4">🔗</div>
-          <h4 class="font-bold text-lg mb-2">Blok + Rantai</h4>
-          <p class="text-slate-400 text-sm leading-relaxed">Data disimpan dalam "blok". Setiap blok baru nyambung ke blok sebelumnya, membentuk "rantai" (chain). Makanya namanya <em>block-chain</em>!</p>
-        </div>
-        <div class="bg-crypto-card/60 rounded-2xl p-6 border border-white/5">
-          <div class="w-10 h-10 rounded-xl bg-crypto-purple/20 flex items-center justify-center text-xl mb-4">👥</div>
-          <h4 class="font-bold text-lg mb-2">Desentralisasi</h4>
-          <p class="text-slate-400 text-sm leading-relaxed">Nggak ada "bos" yang ngatur. Data tersebar di banyak komputer (disebut <em>node</em>), jadi nggak ada satu pihak pun yang bisa mengendalikan semuanya.</p>
-        </div>
-        <div class="bg-crypto-card/60 rounded-2xl p-6 border border-white/5">
-          <div class="w-10 h-10 rounded-xl bg-crypto-gold/20 flex items-center justify-center text-xl mb-4">🔒</div>
-          <h4 class="font-bold text-lg mb-2">Transparan & Aman</h4>
-          <p class="text-slate-400 text-sm leading-relaxed">Semua transaksi bisa dilihat siapa saja (transparan), tapi identitas pengguna tetap anonim. Dan data yang sudah masuk <em>hampir mustahil</em> untuk diubah.</p>
-        </div>
+        <div class="bg-crypto-card/60 rounded-2xl p-6 border border-white/5"><div class="w-10 h-10 rounded-xl bg-crypto-blue/20 flex items-center justify-center text-xl mb-4">🔗</div><h4 class="font-bold text-lg mb-2">Blok + Rantai</h4><p class="text-slate-400 text-sm leading-relaxed">Data disimpan dalam "blok". Setiap blok baru nyambung ke blok sebelumnya, membentuk "rantai" (chain). Makanya namanya <em>block-chain</em>!</p></div>
+        <div class="bg-crypto-card/60 rounded-2xl p-6 border border-white/5"><div class="w-10 h-10 rounded-xl bg-crypto-purple/20 flex items-center justify-center text-xl mb-4">👥</div><h4 class="font-bold text-lg mb-2">Desentralisasi</h4><p class="text-slate-400 text-sm leading-relaxed">Nggak ada "bos" yang ngatur. Data tersebar di banyak komputer (disebut <em>node</em>), jadi nggak ada satu pihak pun yang bisa mengendalikan semuanya.</p></div>
+        <div class="bg-crypto-card/60 rounded-2xl p-6 border border-white/5"><div class="w-10 h-10 rounded-xl bg-crypto-gold/20 flex items-center justify-center text-xl mb-4">🔒</div><h4 class="font-bold text-lg mb-2">Transparan & Aman</h4><p class="text-slate-400 text-sm leading-relaxed">Semua transaksi bisa dilihat siapa saja (transparan), tapi identitas pengguna tetap anonim. Dan data yang sudah masuk <em>hampir mustahil</em> untuk diubah.</p></div>
       </div>
       <div class="bg-crypto-card/40 rounded-2xl p-7 border border-white/5 mb-10">
         <h4 class="font-bold text-center mb-6 text-slate-300">🔍 Gimana Alurnya?</h4>
         <div class="flex flex-col md:flex-row items-center justify-center gap-3 text-center text-sm">
-          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-crypto-blue/30 w-full md:w-auto">
-            <div class="text-2xl mb-1">📝</div>
-            <p class="font-semibold text-white">1. Transaksi Terjadi</p>
-            <p class="text-slate-500 text-xs mt-1">Kamu kirim Bitcoin ke temanmu</p>
-          </div>
+          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-crypto-blue/30 w-full md:w-auto"><div class="text-2xl mb-1">📝</div><p class="font-semibold text-white">1. Transaksi Terjadi</p><p class="text-slate-500 text-xs mt-1">Kamu kirim Bitcoin ke temanmu</p></div>
           <div class="text-crypto-blue text-2xl rotate-90 md:rotate-0">→</div>
-          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-crypto-purple/30 w-full md:w-auto">
-            <div class="text-2xl mb-1">📢</div>
-            <p class="font-semibold text-white">2. Disebar ke Network</p>
-            <p class="text-slate-500 text-xs mt-1">Ribuan node menerima info ini</p>
-          </div>
+          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-crypto-purple/30 w-full md:w-auto"><div class="text-2xl mb-1">📢</div><p class="font-semibold text-white">2. Disebar ke Network</p><p class="text-slate-500 text-xs mt-1">Ribuan node menerima info ini</p></div>
           <div class="text-crypto-blue text-2xl rotate-90 md:rotate-0">→</div>
-          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-crypto-gold/30 w-full md:w-auto">
-            <div class="text-2xl mb-1">✅</div>
-            <p class="font-semibold text-white">3. Diverifikasi</p>
-            <p class="text-slate-500 text-xs mt-1">Node sepakat transaksi valid</p>
-          </div>
+          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-crypto-gold/30 w-full md:w-auto"><div class="text-2xl mb-1">✅</div><p class="font-semibold text-white">3. Diverifikasi</p><p class="text-slate-500 text-xs mt-1">Node sepakat transaksi valid</p></div>
           <div class="text-crypto-blue text-2xl rotate-90 md:rotate-0">→</div>
-          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-green-500/30 w-full md:w-auto">
-            <div class="text-2xl mb-1">⛓️</div>
-            <p class="font-semibold text-white">4. Masuk Blok</p>
-            <p class="text-slate-500 text-xs mt-1">Transaksi permanen di blockchain</p>
-          </div>
+          <div class="bg-crypto-dark rounded-xl px-5 py-4 border border-green-500/30 w-full md:w-auto"><div class="text-2xl mb-1">⛓️</div><p class="font-semibold text-white">4. Masuk Blok</p><p class="text-slate-500 text-xs mt-1">Transaksi permanen di blockchain</p></div>
         </div>
       </div>
       <div class="space-y-3">
         <p class="text-slate-400 font-semibold text-sm mb-4">❓ Pertanyaan yang Sering Ditanya:</p>
         <div class="bg-crypto-card/50 rounded-xl border border-white/5 overflow-hidden">
-          <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold hover:bg-white/5 transition">
-            <span>Siapa yang "menjaga" blockchain kalau nggak ada bosnya?</span>
-            <span class="accordion-icon text-crypto-blue text-2xl font-light">+</span>
-          </button>
-          <div class="accordion-content">
-            <p class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Yang menjaga adalah para <strong class="text-white">miner</strong> dan <strong class="text-white">validator</strong> — orang-orang di seluruh dunia yang menyediakan komputer mereka untuk memproses dan memverifikasi transaksi. Mereka diberi insentif berupa kripto sebagai "upah" atas kerja keras komputer mereka.</p>
-          </div>
+          <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold hover:bg-white/5 transition"><span>Siapa yang "menjaga" blockchain kalau nggak ada bosnya?</span><span class="accordion-icon text-crypto-blue text-2xl font-light">+</span></button>
+          <div class="accordion-content"><p class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Yang menjaga adalah para <strong class="text-white">miner</strong> dan <strong class="text-white">validator</strong> — orang-orang di seluruh dunia yang menyediakan komputer mereka untuk memproses dan memverifikasi transaksi. Mereka diberi insentif berupa kripto sebagai "upah" atas kerja keras komputer mereka.</p></div>
         </div>
         <div class="bg-crypto-card/50 rounded-xl border border-white/5 overflow-hidden">
-          <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold hover:bg-white/5 transition">
-            <span>Apakah blockchain cuma untuk kripto?</span>
-            <span class="accordion-icon text-crypto-blue text-2xl font-light">+</span>
-          </button>
-          <div class="accordion-content">
-            <p class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Nggak! Blockchain bisa dipakai untuk banyak hal: supply chain (melacak asal-usul produk), voting digital, sertifikat pendidikan, rekam medis, dan masih banyak lagi. Kripto hanyalah salah satu aplikasi blockchain yang paling terkenal.</p>
-          </div>
+          <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold hover:bg-white/5 transition"><span>Apakah blockchain cuma untuk kripto?</span><span class="accordion-icon text-crypto-blue text-2xl font-light">+</span></button>
+          <div class="accordion-content"><p class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Nggak! Blockchain bisa dipakai untuk banyak hal: supply chain (melacak asal-usul produk), voting digital, sertifikat pendidikan, rekam medis, dan masih banyak lagi. Kripto hanyalah salah satu aplikasi blockchain yang paling terkenal.</p></div>
         </div>
         <div class="bg-crypto-card/50 rounded-xl border border-white/5 overflow-hidden">
-          <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold hover:bg-white/5 transition">
-            <span>Kenapa data blockchain sulit dipalsukan?</span>
-            <span class="accordion-icon text-crypto-blue text-2xl font-light">+</span>
-          </button>
-          <div class="accordion-content">
-            <p class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Setiap blok punya "<strong class="text-white">hash</strong>" — semacam sidik jari unik yang dibuat dari data di dalamnya. Kalau ada satu karakter yang diubah, hash-nya berubah total. Dan karena setiap blok mencantumkan hash blok sebelumnya, kamu harus ubah <em>semua blok sejak awal</em> — dan melakukannya lebih cepat dari ribuan komputer lain. Hampir mustahil! 😅</p>
-          </div>
+          <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold hover:bg-white/5 transition"><span>Kenapa data blockchain sulit dipalsukan?</span><span class="accordion-icon text-crypto-blue text-2xl font-light">+</span></button>
+          <div class="accordion-content"><p class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Setiap blok punya "<strong class="text-white">hash</strong>" — semacam sidik jari unik yang dibuat dari data di dalamnya. Kalau ada satu karakter yang diubah, hash-nya berubah total. Dan karena setiap blok mencantumkan hash blok sebelumnya, kamu harus ubah <em>semua blok sejak awal</em> — dan melakukannya lebih cepat dari ribuan komputer lain. Hampir mustahil! 😅</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="max-w-5xl mx-auto px-6">
-    <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-  </div>
+  <div class="max-w-5xl mx-auto px-6"><div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div></div>
 
-  <!-- ═══════════════════════════════════════════
-       SECTION 2 — CARA KERJA BITCOIN
-  ═══════════════════════════════════════════ -->
+  <!-- SECTION 2 — CARA KERJA BITCOIN -->
   <section id="bitcoin" class="py-24 px-6 relative overflow-hidden">
     <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-crypto-gold/10 rounded-full blur-[100px] -z-10"></div>
     <div class="max-w-5xl mx-auto">
-      <div class="flex items-center gap-3 mb-3">
-        <span class="text-xs font-bold tracking-widest text-crypto-gold uppercase">Modul 02</span>
-        <span class="h-px flex-1 max-w-[60px] bg-crypto-gold/40"></span>
-      </div>
+      <div class="flex items-center gap-3 mb-3"><span class="text-xs font-bold tracking-widest text-crypto-gold uppercase">Modul 02</span><span class="h-px flex-1 max-w-[60px] bg-crypto-gold/40"></span></div>
       <h2 class="text-4xl md:text-5xl font-black mb-4">₿ Cara Kerja <span class="text-crypto-gold">Bitcoin</span></h2>
       <p class="text-slate-400 text-lg max-w-2xl mb-12 leading-relaxed">Bitcoin adalah uang digital pertama di dunia yang berhasil jalan tanpa bank. Tapi gimana caranya bisa kerja? Yuk kita bedah!</p>
       <div class="bg-crypto-card rounded-3xl p-8 md:p-10 border border-crypto-gold/20 mb-8">
@@ -324,9 +245,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       FITUR / TOPIK BELAJAR
-  ═══════════════════════════════════════════ -->
+  <!-- FITUR / TOPIK BELAJAR -->
   <section id="belajar" class="py-24 px-6 bg-crypto-card/20">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-14">
@@ -334,110 +253,67 @@
         <p class="text-slate-400 max-w-lg mx-auto">Dari dasar hingga praktik langsung — semua ada di sini.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-blue/30">
-          <div class="text-4xl mb-4">⛓️</div>
-          <h3 class="text-xl font-bold mb-2 text-crypto-blue">Blockchain Dasar ✅</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Sudah kamu pelajari di atas! Cara kerja blockchain, konsensus, hash, dan kenapa teknologi ini revolusioner.</p>
-          <span class="mt-4 inline-block text-xs font-semibold bg-crypto-blue/20 text-crypto-blue px-3 py-1 rounded-full">Selesai</span>
-        </div>
-        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-gold/30">
-          <div class="text-4xl mb-4">₿</div>
-          <h3 class="text-xl font-bold mb-2 text-crypto-gold">Cara Kerja Bitcoin ✅</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Sudah kamu pelajari! Mining, halving, wallet, private key, dan kenapa supply Bitcoin terbatas.</p>
-          <span class="mt-4 inline-block text-xs font-semibold bg-crypto-gold/20 text-crypto-gold px-3 py-1 rounded-full">Selesai</span>
-        </div>
-        <div class="bg-crypto-card rounded-2xl p-7 border border-white/5 hover:border-crypto-purple/40 transition group">
-          <div class="text-4xl mb-4">💰</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-crypto-purple transition">Kripto & DeFi</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Ethereum, stablecoin, staking, liquidity pool, dan yield farming explained.</p>
-          <span class="mt-4 inline-block text-xs font-semibold bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">Segera</span>
-        </div>
-        <div class="bg-crypto-card rounded-2xl p-7 border border-white/5 hover:border-crypto-gold/40 transition group">
-          <div class="text-4xl mb-4">🖼️</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-crypto-gold transition">NFT & Metaverse</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Apa itu NFT, cara mint, jual-beli, dan potensinya di dunia digital.</p>
-          <span class="mt-4 inline-block text-xs font-semibold bg-white/5 text-slate-500 px-3 py-1 rounded-full">Coming Soon</span>
-        </div>
-        <div class="bg-crypto-card rounded-2xl p-7 border border-white/5 hover:border-crypto-purple/40 transition group">
-          <div class="text-4xl mb-4">📜</div>
-          <h3 class="text-xl font-bold mb-2 group-hover:text-crypto-purple transition">Smart Contract</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Konsep smart contract, cara baca Solidity sederhana, dan interaksi dengan dApp.</p>
-          <span class="mt-4 inline-block text-xs font-semibold bg-white/5 text-slate-500 px-3 py-1 rounded-full">Coming Soon</span>
-        </div>
-        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-purple/30">
-          <div class="text-4xl mb-4">🔗</div>
-          <h3 class="text-xl font-bold mb-2 text-crypto-purple">Connect Wallet ✅</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">Fitur baru! Klik tombol "Connect Wallet" di navbar untuk menghubungkan MetaMask kamu langsung ke KriptoEdu.</p>
-          <span class="mt-4 inline-block text-xs font-semibold bg-crypto-purple/20 text-crypto-purple px-3 py-1 rounded-full">Live!</span>
+        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-blue/30"><div class="text-4xl mb-4">⛓️</div><h3 class="text-xl font-bold mb-2 text-crypto-blue">Blockchain Dasar ✅</h3><p class="text-slate-400 text-sm leading-relaxed">Sudah kamu pelajari di atas! Cara kerja blockchain, konsensus, hash, dan kenapa teknologi ini revolusioner.</p><span class="mt-4 inline-block text-xs font-semibold bg-crypto-blue/20 text-crypto-blue px-3 py-1 rounded-full">Selesai</span></div>
+        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-gold/30"><div class="text-4xl mb-4">₿</div><h3 class="text-xl font-bold mb-2 text-crypto-gold">Cara Kerja Bitcoin ✅</h3><p class="text-slate-400 text-sm leading-relaxed">Sudah kamu pelajari! Mining, halving, wallet, private key, dan kenapa supply Bitcoin terbatas.</p><span class="mt-4 inline-block text-xs font-semibold bg-crypto-gold/20 text-crypto-gold px-3 py-1 rounded-full">Selesai</span></div>
+        <div class="bg-crypto-card rounded-2xl p-7 border border-white/5 hover:border-crypto-purple/40 transition group"><div class="text-4xl mb-4">💰</div><h3 class="text-xl font-bold mb-2 group-hover:text-crypto-purple transition">Kripto & DeFi</h3><p class="text-slate-400 text-sm leading-relaxed">Ethereum, stablecoin, staking, liquidity pool, dan yield farming explained.</p><span class="mt-4 inline-block text-xs font-semibold bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">Segera</span></div>
+        <div class="bg-crypto-card rounded-2xl p-7 border border-white/5 hover:border-crypto-gold/40 transition group"><div class="text-4xl mb-4">🖼️</div><h3 class="text-xl font-bold mb-2 group-hover:text-crypto-gold transition">NFT & Metaverse</h3><p class="text-slate-400 text-sm leading-relaxed">Apa itu NFT, cara mint, jual-beli, dan potensinya di dunia digital.</p><span class="mt-4 inline-block text-xs font-semibold bg-white/5 text-slate-500 px-3 py-1 rounded-full">Coming Soon</span></div>
+        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-purple/30"><div class="text-4xl mb-4">🔗</div><h3 class="text-xl font-bold mb-2 text-crypto-purple">Connect Wallet ✅</h3><p class="text-slate-400 text-sm leading-relaxed">Hubungkan MetaMask kamu langsung ke KriptoEdu via tombol di navbar.</p><span class="mt-4 inline-block text-xs font-semibold bg-crypto-purple/20 text-crypto-purple px-3 py-1 rounded-full">Live!</span></div>
+        <div class="bg-crypto-card rounded-2xl p-7 border border-crypto-gold/30 cursor-pointer hover:bg-crypto-gold/5 transition" onclick="openDonationModal()">
+          <div class="text-4xl mb-4">💛</div>
+          <h3 class="text-xl font-bold mb-2 text-crypto-gold">Tip Jar Kripto ✅</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Donasi ETH langsung via MetaMask! Pilih nominal, klik kirim, selesai. Konfeti menanti kamu! 🎉</p>
+          <span class="mt-4 inline-block text-xs font-semibold bg-crypto-gold/20 text-crypto-gold px-3 py-1 rounded-full">Live! Coba Sekarang →</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       MODUL / KURIKULUM
-  ═══════════════════════════════════════════ -->
+  <!-- MODUL / KURIKULUM -->
   <section id="modul" class="py-24 px-6 bg-crypto-card/30">
     <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-14">
-        <h2 class="text-4xl font-black mb-3">Kurikulum Terstruktur</h2>
-        <p class="text-slate-400">Belajar step-by-step dari pemula hingga bisa pakai dApp sendiri.</p>
-      </div>
+      <div class="text-center mb-14"><h2 class="text-4xl font-black mb-3">Kurikulum Terstruktur</h2><p class="text-slate-400">Belajar step-by-step dari pemula hingga bisa pakai dApp sendiri.</p></div>
       <div class="space-y-4">
-        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-blue/30">
-          <span class="text-2xl font-black text-crypto-blue w-8 shrink-0">01</span>
-          <div class="flex-1"><h4 class="font-bold">Pengenalan Blockchain & Kripto</h4><p class="text-slate-500 text-sm">5 pelajaran · 30 menit</p></div>
-          <span class="text-xs font-semibold bg-crypto-blue/20 text-crypto-blue px-3 py-1 rounded-full">✅ Ada di halaman ini</span>
+        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-blue/30"><span class="text-2xl font-black text-crypto-blue w-8 shrink-0">01</span><div class="flex-1"><h4 class="font-bold">Pengenalan Blockchain & Kripto</h4><p class="text-slate-500 text-sm">5 pelajaran · 30 menit</p></div><span class="text-xs font-semibold bg-crypto-blue/20 text-crypto-blue px-3 py-1 rounded-full">✅ Ada di halaman ini</span></div>
+        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-gold/30"><span class="text-2xl font-black text-crypto-gold w-8 shrink-0">02</span><div class="flex-1"><h4 class="font-bold">Cara Kerja Bitcoin & Ethereum</h4><p class="text-slate-500 text-sm">8 pelajaran · 1 jam</p></div><span class="text-xs font-semibold bg-crypto-gold/20 text-crypto-gold px-3 py-1 rounded-full">✅ Ada di halaman ini</span></div>
+        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-purple/30"><span class="text-2xl font-black text-crypto-purple w-8 shrink-0">03</span><div class="flex-1"><h4 class="font-bold">Setup Wallet & Koneksi MetaMask</h4><p class="text-slate-500 text-sm">Live di navbar!</p></div><span class="text-xs font-semibold bg-crypto-purple/20 text-crypto-purple px-3 py-1 rounded-full">✅ Live!</span></div>
+        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-gold/30 cursor-pointer hover:bg-crypto-gold/5 transition" onclick="openDonationModal()">
+          <span class="text-2xl font-black text-crypto-gold w-8 shrink-0">💛</span>
+          <div class="flex-1"><h4 class="font-bold">Tip Jar — Donasi Kripto via MetaMask</h4><p class="text-slate-500 text-sm">Klik untuk coba donasi!</p></div>
+          <span class="text-xs font-semibold bg-crypto-gold/20 text-crypto-gold px-3 py-1 rounded-full">✅ Live!</span>
         </div>
-        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-gold/30">
-          <span class="text-2xl font-black text-crypto-gold w-8 shrink-0">02</span>
-          <div class="flex-1"><h4 class="font-bold">Cara Kerja Bitcoin & Ethereum</h4><p class="text-slate-500 text-sm">8 pelajaran · 1 jam</p></div>
-          <span class="text-xs font-semibold bg-crypto-gold/20 text-crypto-gold px-3 py-1 rounded-full">✅ Ada di halaman ini</span>
-        </div>
-        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-crypto-purple/30">
-          <span class="text-2xl font-black text-crypto-purple w-8 shrink-0">03</span>
-          <div class="flex-1"><h4 class="font-bold">Setup Wallet & Koneksi MetaMask</h4><p class="text-slate-500 text-sm">3 langkah · Langsung coba!</p></div>
-          <span class="text-xs font-semibold bg-crypto-purple/20 text-crypto-purple px-3 py-1 rounded-full">✅ Live di Navbar!</span>
-        </div>
-        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-white/5 opacity-60">
-          <span class="text-2xl font-black text-slate-500 w-8 shrink-0">04</span>
-          <div class="flex-1"><h4 class="font-bold text-slate-400">DeFi & Smart Contract</h4><p class="text-slate-600 text-sm">10 pelajaran · 2 jam</p></div>
-          <span class="text-xs font-semibold bg-white/5 text-slate-500 px-3 py-1 rounded-full">Coming Soon</span>
-        </div>
+        <div class="flex items-center gap-5 bg-crypto-card rounded-xl px-6 py-5 border border-white/5 opacity-60"><span class="text-2xl font-black text-slate-500 w-8 shrink-0">04</span><div class="flex-1"><h4 class="font-bold text-slate-400">DeFi & Smart Contract</h4><p class="text-slate-600 text-sm">10 pelajaran · 2 jam</p></div><span class="text-xs font-semibold bg-white/5 text-slate-500 px-3 py-1 rounded-full">Coming Soon</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       CTA BANNER
-  ═══════════════════════════════════════════ -->
+  <!-- CTA BANNER -->
   <section class="py-24 px-6">
     <div class="max-w-3xl mx-auto text-center bg-gradient-to-r from-crypto-purple/20 to-crypto-blue/20 border border-white/10 rounded-3xl px-10 py-16">
       <h2 class="text-4xl font-black mb-4">Siap Masuk Dunia Web3?</h2>
-      <p class="text-slate-400 mb-8 text-lg">Hubungkan wallet kamu dan mulai perjalanan Web3 pertamamu sekarang!</p>
+      <p class="text-slate-400 mb-8 text-lg">Hubungkan wallet & dukung KriptoEdu dengan tip kecil kamu!</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <button onclick="document.getElementById('wallet-btn').click()" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-crypto-blue to-crypto-purple text-white font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition shadow-lg shadow-purple-900/40">
-          🔗 Connect Wallet Sekarang
+          🔗 Connect Wallet
         </button>
-        <a href="#blockchain" class="inline-flex items-center justify-center border border-white/20 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/5 transition text-lg">
-          Mulai Belajar
-        </a>
+        <button onclick="openDonationModal()" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-crypto-gold to-yellow-400 text-crypto-dark font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition shadow-lg shadow-yellow-900/20">
+          💛 Kirim Tip Kripto
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       FOOTER
-  ═══════════════════════════════════════════ -->
+  <!-- FOOTER -->
   <footer class="border-t border-white/10 py-10 px-6 text-center text-slate-500 text-sm">
     <p class="font-bold text-white mb-1">₿ KriptoEdu</p>
     <p>© 2026 KriptoEdu · Dibuat dengan ❤️ untuk komunitas Web3 Indonesia</p>
-    <p class="mt-2 text-xs text-slate-600">Twitter · Telegram · Discord</p>
+    <p class="mt-3">
+      <button onclick="openDonationModal()" class="inline-flex items-center gap-2 text-crypto-gold hover:text-yellow-300 transition text-xs font-semibold">
+        💛 Dukung KriptoEdu dengan Tip Kripto
+      </button>
+    </p>
   </footer>
 
-  <!-- ═══════════════════════════════════════════
-       JAVASCRIPT
-  ═══════════════════════════════════════════ -->
+  <!-- JAVASCRIPT -->
   <script>
     function toggleAccordion(btn) {
       const content = btn.nextElementSibling;
@@ -449,8 +325,9 @@
     }
   </script>
 
-  <!-- wallet.js dimuat terakhir setelah DOM siap -->
+  <!-- Load wallet.js dulu (state & toast), baru donation.js -->
   <script src="wallet.js"></script>
+  <script src="donation.js"></script>
 
 </body>
 </html>
