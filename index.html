@@ -64,8 +64,13 @@
       </div>
       <div class="md:hidden flex items-center gap-2">
         <button onclick="openDonationModal()" class="flex items-center gap-1 bg-crypto-gold/20 text-crypto-gold text-xs font-bold px-3 py-1.5 rounded-full">&#x1F49B;</button>
+        <!-- CATATAN: data-i18n DIHAPUS dari tombol ini agar wallet.js bisa
+             mengontrol labelnya secara penuh. i18n tidak boleh override
+             alamat wallet yang sudah diset oleh wallet.js. -->
         <button id="wallet-btn-mobile"
-          class="flex items-center gap-2 bg-crypto-purple/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full" data-i18n="nav_wallet">&#x1F517; Wallet</button>
+          class="flex items-center gap-2 bg-crypto-purple/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+          &#x1F517; Wallet
+        </button>
       </div>
     </div>
   </nav>
