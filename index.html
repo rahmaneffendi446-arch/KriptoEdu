@@ -27,6 +27,46 @@
     .article-body p { margin-bottom:1rem; line-height:1.8; color:#94a3b8; }
     .article-body p strong { color:#f1f5f9; }
     .article-body p em { color:#cbd5e1; font-style:italic; }
+
+    /* BTC Price Ticker */
+    #btc-price-ticker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.20);
+      border-radius: 9999px;
+      padding: 4px 12px 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      transition: border-color 0.3s;
+    }
+    #btc-price-ticker:hover { border-color: rgba(245,158,11,0.45); }
+    #btc-price-ticker .btc-label {
+      font-size: 10px;
+      font-weight: 900;
+      color: #F59E0B;
+      letter-spacing: 0.05em;
+    }
+    #btc-price-value {
+      color: #F59E0B;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.4s;
+    }
+    #btc-price-change {
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0.85;
+      transition: color 0.4s;
+    }
+    #btc-price-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body class="bg-crypto-dark text-white font-sans antialiased">
@@ -42,10 +82,14 @@
   <!-- NAVBAR -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-crypto-dark/80 backdrop-blur-md border-b border-white/10">
     <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-      <a href="#" class="flex items-center gap-2 font-black text-xl tracking-tight">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2 font-black text-xl tracking-tight flex-shrink-0">
         <span class="text-2xl">&#x20BF;</span>
         <span class="bg-gradient-to-r from-crypto-blue to-crypto-purple bg-clip-text text-transparent">KriptoEdu</span>
       </a>
+
+      <!-- Nav Links (desktop) -->
       <ul class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-300">
         <li><a href="#belajar"    class="hover:text-white transition" data-i18n="nav_learn">Belajar</a></li>
         <li><a href="#blockchain" class="hover:text-white transition" data-i18n="nav_blockchain">Blockchain</a></li>
@@ -54,14 +98,28 @@
         <li><a href="#modul"      class="hover:text-white transition" data-i18n="nav_module">Modul</a></li>
         <li><button onclick="openDonationModal()" class="text-crypto-gold hover:text-yellow-300 transition font-bold" data-i18n="nav_donate">&#x1F49B; Donasi</button></li>
       </ul>
+
+      <!-- Kanan desktop: BTC ticker + wallet + CTA -->
       <div class="hidden md:flex items-center gap-3">
+
+        <!-- BTC Live Price Ticker -->
+        <div id="btc-price-ticker" title="Harga Bitcoin live dari CoinGecko. Refresh tiap 60 detik.">
+          <span id="btc-price-dot" class="bg-slate-500 animate-pulse"></span>
+          <span class="btc-label">&#x20BF; BTC</span>
+          <span id="btc-price-value" class="text-crypto-gold">Memuat&hellip;</span>
+          <span id="btc-price-change" class="text-slate-500"></span>
+        </div>
+
         <button id="wallet-btn" type="button"
           class="hidden md:inline-flex items-center gap-2 bg-crypto-purple hover:bg-purple-500 text-white text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 cursor-pointer">
           <span id="wallet-btn-dot" class="w-2 h-2 rounded-full bg-white/50"></span>
           <span id="wallet-btn-label"><span>&#x1F517; Connect Wallet</span></span>
         </button>
+
         <a href="#mulai" class="inline-flex items-center gap-1 border border-white/20 hover:bg-white/5 text-white text-sm font-semibold px-4 py-2 rounded-full transition" data-i18n="nav_start">Mulai Gratis &rarr;</a>
       </div>
+
+      <!-- Kanan mobile -->
       <div class="md:hidden flex items-center gap-2">
         <button onclick="openDonationModal()" class="flex items-center gap-1 bg-crypto-gold/20 text-crypto-gold text-xs font-bold px-3 py-1.5 rounded-full">&#x1F49B;</button>
         <!-- CATATAN: data-i18n DIHAPUS dari tombol ini agar wallet.js bisa
@@ -72,6 +130,7 @@
           &#x1F517; Wallet
         </button>
       </div>
+
     </div>
   </nav>
 
@@ -445,11 +504,12 @@
     }
   </script>
 
-  <!-- Load order: wallet.js -> donation.js -> quiz.js -> i18n.js -->
+  <!-- Load order: wallet.js -> donation.js -> quiz.js -> i18n.js -> btcprice.js -->
   <script src="wallet.js"></script>
   <script src="donation.js"></script>
   <script src="quiz.js"></script>
   <script src="i18n.js"></script>
+  <script src="btcprice.js"></script>
 
 </body>
 </html>
