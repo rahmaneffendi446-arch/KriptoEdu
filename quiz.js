@@ -1,9 +1,9 @@
 /**
  * quiz.js - KriptoEdu Checkpoint Kuis System
- * RAH-17: Sistem gembok kuis interaktif di tengah materi
  *
  * Fitur:
  *  - 3 kuis checkpoint yang mengunci materi di bawahnya
+ *  - Siapa saja bisa mengerjakan kuis tanpa perlu connect wallet
  *  - Progress tersimpan di localStorage (tidak hilang saat reload)
  *  - Animasi reward bintang saat jawaban benar
  *  - Efek unlock + scroll otomatis ke materi berikutnya
@@ -11,64 +11,63 @@
  *  - Tombol retry tanpa reload halaman
  */
 
-// DATA SOAL
+// ── DATA SOAL ─────────────────────────────────────────────────────────────────
+
 const QUIZ_DATA = [
   {
     id: 'q1',
     theme: 'blue',
-    badge: '\uD83D\uDD10 Kuis Keamanan',
+    badge: '\u26D3\uFE0F Kuis Blockchain',
     number: 1,
     unlocks: 'lock-bitcoin',
-    question: 'Kamu baru saja membuat wallet MetaMask dan mendapatkan seed phrase. Apa yang sebaiknya kamu lakukan?',
+    question: 'Apa karakteristik utama dari teknologi Blockchain yang membuatnya sangat aman?',
     options: [
-      { text: 'Screenshot dan simpan di Google Photos supaya aman', correct: false },
-      { text: 'Tulis tangan di kertas dan simpan di tempat aman. Jangan bagikan ke siapapun!', correct: true },
-      { text: 'Kirim ke email sendiri agar mudah diakses kapan saja', correct: false },
-      { text: 'Simpan di notes HP dan backup ke cloud', correct: false },
+      { text: 'Datanya bisa diubah kapan saja oleh admin.', correct: false },
+      { text: 'Mengandalkan satu server pusat yang sangat kuat.', correct: false },
+      { text: 'Desentralisasi dan data yang sudah masuk tidak bisa dimanipulasi (Immutable).', correct: true },
+      { text: 'Hanya bisa diakses oleh pemerintah.', correct: false },
     ],
-    explanation: '\uD83C\uDF1F Tepat! Seed phrase adalah kunci master wallet kamu. Satu-satunya cara aman adalah tulis tangan di kertas dan simpan offline. Jangan pernah simpan secara digital atau bagikan ke siapapun. Tidak ada layanan legitimate yang akan memintanya.',
+    explanation: '\uD83C\uDF1F Tepat sekali! Blockchain aman karena dua pilar utama: Desentralisasi (data tersebar di ribuan node, tidak ada satu titik kegagalan) dan Immutability (data yang sudah masuk ke blok tidak bisa diubah tanpa mengubah seluruh rantai, yang hampir mustahil dilakukan).',
   },
   {
     id: 'q2',
     theme: 'purple',
-    badge: '\uD83C\uDF10 Kuis Jaringan',
+    badge: '\u20BF Kuis Bitcoin',
     number: 2,
     unlocks: 'lock-materi',
-    question: 'Temanmu minta kamu kirim USDT ke alamatnya. Dia bilang "kirim lewat jaringan BEP-20 ya". Apa bedanya dengan ERC-20?',
+    question: 'Bagaimana cara transaksi Bitcoin divalidasi tanpa perlu bank sentral?',
     options: [
-      { text: 'Tidak ada bedanya, keduanya sama saja dan bisa dipakai bergantian', correct: false },
-      { text: 'ERC-20 adalah jaringan Ethereum, BEP-20 adalah jaringan Binance Smart Chain. Biaya dan kecepatan berbeda', correct: true },
-      { text: 'BEP-20 lebih canggih dan bisa menggantikan semua fungsi ERC-20', correct: false },
-      { text: 'ERC-20 hanya untuk Bitcoin, BEP-20 untuk semua altcoin', correct: false },
+      { text: 'Menggunakan sistem antrean manual.', correct: false },
+      { text: 'Melalui proses Mining dengan konsensus Proof of Work (PoW).', correct: true },
+      { text: 'Divalidasi oleh pemilik aplikasi Bitcoin.', correct: false },
+      { text: 'Menggunakan mesin ATM khusus.', correct: false },
     ],
-    explanation: '\uD83C\uDF1F Keren! ERC-20 berjalan di atas jaringan Ethereum (ETH dipakai untuk biaya gas), sementara BEP-20 berjalan di Binance Smart Chain (BNB untuk biaya gas). Pastikan selalu pilih jaringan yang sama dengan tujuan, karena salah jaringan bisa bikin koin hilang permanen!',
+    explanation: '\uD83C\uDF1F Benar! Bitcoin menggunakan mekanisme konsensus Proof of Work (PoW). Para miner berlomba memecahkan teka-teki matematika yang sulit. Yang berhasil duluan berhak memvalidasi blok transaksi dan mendapat hadiah Bitcoin. Proses ini sepenuhnya terdesentralisasi, tanpa otoritas pusat seperti bank.',
   },
   {
     id: 'q3',
     theme: 'gold',
-    badge: '\uD83D\uDCBC Kuis Wallet',
+    badge: '\uD83D\uDD10 Kuis Keamanan Wallet',
     number: 3,
     unlocks: 'lock-features',
-    question: 'Kamu punya 10 ETH hasil kerja keras selama setahun. Mana strategi penyimpanan yang paling aman untuk jangka panjang?',
+    question: 'Jika kamu memiliki Wallet MetaMask, di mana tempat paling aman untuk menyimpan 12 kata Seed Phrase milikmu?',
     options: [
-      { text: 'Biarkan saja di exchange karena exchange punya keamanan tinggi', correct: false },
-      { text: 'Pindahkan ke cold wallet (Ledger/Trezor) dan simpan seed phrase-nya secara offline', correct: true },
-      { text: 'Bagi ke beberapa exchange berbeda supaya risikonya tersebar', correct: false },
-      { text: 'Simpan di hot wallet MetaMask karena lebih mudah dipantau', correct: false },
+      { text: 'Foto lalu simpan di Google Photos atau iCloud.', correct: false },
+      { text: 'Ketik di kolom chat WhatsApp biar gampang dicari.', correct: false },
+      { text: 'Tulis manual di kertas dan simpan di tempat fisik yang aman (Offline).', correct: true },
+      { text: 'Berikan kepada admin jika ada kendala teknis.', correct: false },
     ],
-    explanation: '\uD83C\uDF1F Jawaban terbaik! Cold wallet menyimpan private key offline sehingga tidak bisa diretas secara remote. Ingat: exchange bisa bangkrut, di-hack, atau membekukan akun (contoh: FTX 2022). "Not your keys, not your coins". Kalau koin ada di exchange, kamu hanya pegang IOU.',
+    explanation: '\uD83C\uDF1F Jawaban terbaik! Seed phrase adalah kunci master seluruh asetmu. Satu-satunya cara aman adalah menyimpannya secara OFFLINE, ditulis tangan di kertas, di tempat fisik yang aman. Tidak ada layanan atau admin legitimate yang akan pernah memintanya.',
   },
 ];
 
-// STATE
+// ── STATE ─────────────────────────────────────────────────────────────────────
+
 const STORAGE_KEY = 'kriptoedu_quiz_progress';
 
 function loadProgress() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  } catch (_) {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch (_) { return {}; }
 }
 
 function saveProgress(id) {
@@ -77,14 +76,16 @@ function saveProgress(id) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
 }
 
-// THEME CONFIG
+// ── THEME CONFIG ──────────────────────────────────────────────────────────────
+
 const THEMES = {
-  blue:   { accent: '#1DA1F2', border: 'border-blue-500/30',   bg: 'bg-blue-500/10',   text: 'text-blue-300',   btn: 'bg-blue-500 hover:bg-blue-400',   ring: 'ring-blue-500/40'   },
-  purple: { accent: '#7C3AED', border: 'border-purple-500/30', bg: 'bg-purple-500/10', text: 'text-purple-300', btn: 'bg-purple-600 hover:bg-purple-500', ring: 'ring-purple-500/40' },
+  blue:   { accent: '#1DA1F2', border: 'border-blue-500/30',   bg: 'bg-blue-500/10',   text: 'text-blue-300',   btn: 'bg-blue-500 hover:bg-blue-400',                  ring: 'ring-blue-500/40'   },
+  purple: { accent: '#7C3AED', border: 'border-purple-500/30', bg: 'bg-purple-500/10', text: 'text-purple-300', btn: 'bg-purple-600 hover:bg-purple-500',               ring: 'ring-purple-500/40' },
   gold:   { accent: '#F59E0B', border: 'border-yellow-500/30', bg: 'bg-yellow-500/10', text: 'text-yellow-300', btn: 'bg-yellow-500 hover:bg-yellow-400 text-gray-900', ring: 'ring-yellow-500/40' },
 };
 
-// RENDER QUIZ
+// ── RENDER QUIZ ───────────────────────────────────────────────────────────────
+
 function renderQuiz(data) {
   const t   = THEMES[data.theme];
   const ctn = document.getElementById(`quiz-${data.id}`);
@@ -107,7 +108,7 @@ function renderQuiz(data) {
 
       <!-- Progress bar -->
       <div class="w-full bg-white/5 rounded-full h-1.5 mb-8">
-        <div class="h-1.5 rounded-full transition-all duration-500" style="width:${(data.number/3)*100}%;background:${t.accent}"></div>
+        <div class="h-1.5 rounded-full transition-all duration-500" style="width:${(data.number / 3) * 100}%;background:${t.accent}"></div>
       </div>
 
       <!-- Question -->
@@ -138,10 +139,10 @@ function renderQuiz(data) {
         `).join('')}
       </div>
 
-      <!-- Feedback area (hidden initially) -->
+      <!-- Feedback area -->
       <div id="feedback-${data.id}" class="hidden mb-4"></div>
 
-      <!-- Submit / Result button -->
+      <!-- Submit button -->
       <div id="action-${data.id}">
         <button
           onclick="submitQuiz('${data.id}')"
@@ -158,7 +159,8 @@ function renderQuiz(data) {
   `;
 }
 
-// SELECT OPTION
+// ── SELECT OPTION ─────────────────────────────────────────────────────────────
+
 let selectedAnswers = {};
 
 function selectOption(quizId, index) {
@@ -183,7 +185,7 @@ function selectOption(quizId, index) {
   const chosen = document.querySelector(`#options-${quizId} [data-index='${index}']`);
   if (chosen) {
     chosen.classList.add(`border-[${t.accent}]`, 'bg-white/10', 'ring-2');
-    chosen.querySelector('.option-letter').classList.add(`text-white`);
+    chosen.querySelector('.option-letter').classList.add('text-white');
     chosen.style.borderColor = t.accent;
     chosen.style.boxShadow   = `0 0 0 2px ${t.accent}40`;
   }
@@ -191,8 +193,8 @@ function selectOption(quizId, index) {
   // Aktifkan tombol submit
   const submitBtn = document.getElementById(`submit-${quizId}`);
   if (submitBtn) {
-    submitBtn.disabled   = false;
-    submitBtn.className  = submitBtn.className
+    submitBtn.disabled  = false;
+    submitBtn.className = submitBtn.className
       .replace('bg-white/5 text-slate-600 cursor-not-allowed border border-white/10', '');
     submitBtn.className += ` ${t.btn} text-white cursor-pointer ring-0`;
     submitBtn.style.background = t.accent;
@@ -200,15 +202,16 @@ function selectOption(quizId, index) {
   }
 }
 
-// SUBMIT QUIZ
+// ── SUBMIT QUIZ ───────────────────────────────────────────────────────────────
+
 function submitQuiz(quizId) {
-  const data    = QUIZ_DATA.find(q => q.id === quizId);
-  const chosen  = selectedAnswers[quizId];
+  const data   = QUIZ_DATA.find(q => q.id === quizId);
+  const chosen = selectedAnswers[quizId];
   if (chosen === undefined) return;
 
   const isCorrect = data.options[chosen].correct;
 
-  // Disable semua options
+  // Disable semua option
   document.querySelectorAll(`#options-${quizId} .quiz-option`).forEach(btn => {
     btn.onclick = null;
     btn.style.cursor = 'default';
@@ -218,26 +221,22 @@ function submitQuiz(quizId) {
   const submitBtn = document.getElementById(`submit-${quizId}`);
   if (submitBtn) submitBtn.disabled = true;
 
-  if (isCorrect) {
-    onCorrect(data, chosen);
-  } else {
-    onWrong(data, chosen);
-  }
+  if (isCorrect) onCorrect(data, chosen);
+  else           onWrong(data, chosen);
 }
 
-// CORRECT HANDLER
-function onCorrect(data, chosenIdx) {
-  const t = THEMES[data.theme];
+// ── CORRECT HANDLER ───────────────────────────────────────────────────────────
 
+function onCorrect(data, chosenIdx) {
   // Highlight jawaban benar (hijau)
   const chosenBtn = document.querySelector(`#options-${data.id} [data-index='${chosenIdx}']`);
   if (chosenBtn) {
-    chosenBtn.style.borderColor  = '#10B981';
-    chosenBtn.style.background   = 'rgba(16,185,129,0.15)';
-    chosenBtn.style.boxShadow    = '0 0 0 2px rgba(16,185,129,0.3)';
+    chosenBtn.style.borderColor = '#10B981';
+    chosenBtn.style.background  = 'rgba(16,185,129,0.15)';
+    chosenBtn.style.boxShadow   = '0 0 0 2px rgba(16,185,129,0.3)';
   }
 
-  // Feedback box
+  // Feedback
   const fb = document.getElementById(`feedback-${data.id}`);
   if (fb) {
     fb.className = 'bg-green-500/10 border border-green-500/30 rounded-2xl p-5';
@@ -250,9 +249,10 @@ function onCorrect(data, chosenIdx) {
         </div>
       </div>
     `;
+    fb.classList.remove('hidden');
   }
 
-  // Ganti tombol submit jadi tombol unlock
+  // Tombol unlock
   const action = document.getElementById(`action-${data.id}`);
   if (action) {
     action.innerHTML = `
@@ -271,16 +271,13 @@ function onCorrect(data, chosenIdx) {
     `;
   }
 
-  // Simpan progress
   saveProgress(data.id);
-
-  // Launch reward stars
   launchStars(document.getElementById(`quiz-${data.id}`));
 }
 
-// WRONG HANDLER
+// ── WRONG HANDLER ─────────────────────────────────────────────────────────────
+
 function onWrong(data, chosenIdx) {
-  // Highlight jawaban yang dipilih (merah)
   const chosenBtn = document.querySelector(`#options-${data.id} [data-index='${chosenIdx}']`);
   if (chosenBtn) {
     chosenBtn.style.borderColor = '#EF4444';
@@ -290,7 +287,6 @@ function onWrong(data, chosenIdx) {
     setTimeout(() => chosenBtn.classList.remove('quiz-shake'), 600);
   }
 
-  // Feedback box
   const fb = document.getElementById(`feedback-${data.id}`);
   if (fb) {
     fb.className = 'bg-red-500/10 border border-red-500/30 rounded-2xl p-5';
@@ -303,9 +299,9 @@ function onWrong(data, chosenIdx) {
         </div>
       </div>
     `;
+    fb.classList.remove('hidden');
   }
 
-  // Tombol retry
   const action = document.getElementById(`action-${data.id}`);
   if (action) {
     action.innerHTML = `
@@ -323,18 +319,19 @@ function onWrong(data, chosenIdx) {
   }
 }
 
-// RETRY
+// ── RETRY ─────────────────────────────────────────────────────────────────────
+
 function retryQuiz(quizId) {
   delete selectedAnswers[quizId];
   renderQuiz(QUIZ_DATA.find(q => q.id === quizId));
 }
 
-// UNLOCK SECTION
+// ── UNLOCK SECTION ────────────────────────────────────────────────────────────
+
 function unlockSection(quizId, lockId) {
   const lockEl = document.getElementById(lockId);
   if (!lockEl) return;
 
-  // Fade-out animasi gembok
   const gateEl = document.getElementById(`gate-${lockId}`);
   if (gateEl) {
     gateEl.style.transition = 'opacity 0.4s, transform 0.4s';
@@ -343,33 +340,29 @@ function unlockSection(quizId, lockId) {
     setTimeout(() => gateEl.remove(), 400);
   }
 
-  // Reveal materi
   setTimeout(() => {
     lockEl.style.transition = 'opacity 0.6s, transform 0.5s';
     lockEl.style.opacity    = '0';
     lockEl.style.transform  = 'translateY(20px)';
     lockEl.classList.remove('hidden');
-    // Force reflow
     lockEl.getBoundingClientRect();
     lockEl.style.opacity   = '1';
     lockEl.style.transform = 'translateY(0)';
-
-    // Scroll ke materi yang baru dibuka (setelah animasi)
     setTimeout(() => {
       lockEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 300);
   }, 350);
 
-  // Tandai kuis sebagai selesai
   const quizCard = document.getElementById(`quiz-${quizId}`);
   if (quizCard) {
-    quizCard.style.transition = 'opacity 0.4s';
-    quizCard.style.opacity    = '0.5';
+    quizCard.style.transition    = 'opacity 0.4s';
+    quizCard.style.opacity       = '0.5';
     quizCard.style.pointerEvents = 'none';
   }
 }
 
-// REWARD ANIMATION
+// ── REWARD ANIMATION ──────────────────────────────────────────────────────────
+
 function launchStars(container) {
   if (!container) return;
   const rect   = container.getBoundingClientRect();
@@ -391,18 +384,18 @@ function launchStars(container) {
         will-change: transform, opacity;
       `;
       document.body.appendChild(el);
-      // Force reflow
       el.getBoundingClientRect();
       const vx = (Math.random() - 0.5) * 200;
       const vy = -(Math.random() * 220 + 80);
-      el.style.transform = `translate(calc(-50% + ${vx}px), calc(-50% + ${vy}px)) rotate(${Math.random()*360}deg)`;
+      el.style.transform = `translate(calc(-50% + ${vx}px), calc(-50% + ${vy}px)) rotate(${Math.random() * 360}deg)`;
       el.style.opacity   = '0';
       setTimeout(() => el.remove(), 1300);
     }, i * 55);
   }
 }
 
-// GATE (gembok materi)
+// ── GATE (gembok materi) ──────────────────────────────────────────────────────
+
 function renderGate(lockId, label) {
   const gateContainer = document.getElementById(`gate-${lockId}`);
   if (!gateContainer) return;
@@ -410,8 +403,7 @@ function renderGate(lockId, label) {
   gateContainer.innerHTML = `
     <div class="flex flex-col items-center justify-center gap-4 py-10 px-6 text-center">
       <div class="relative">
-        <div class="w-20 h-20 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-4xl
-                    animate-pulse">
+        <div class="w-20 h-20 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-4xl animate-pulse">
           \uD83D\uDD12
         </div>
         <div class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 border-2 border-[#0F172A]
@@ -430,7 +422,8 @@ function renderGate(lockId, label) {
   `;
 }
 
-// INIT
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
 function initQuizSystem() {
   const progress = loadProgress();
 
@@ -442,15 +435,12 @@ function initQuizSystem() {
 
     if (progress[data.id]) {
       // Sudah pernah benar, langsung unlock tanpa animasi
-      if (lockEl) {
-        lockEl.classList.remove('hidden');
-        lockEl.style.opacity = '1';
-      }
+      if (lockEl) { lockEl.classList.remove('hidden'); lockEl.style.opacity = '1'; }
       if (gateEl) gateEl.remove();
 
       const quizCard = document.getElementById(`quiz-${data.id}`);
       if (quizCard) {
-        quizCard.style.opacity = '0.65';
+        quizCard.style.opacity       = '0.65';
         quizCard.style.pointerEvents = 'none';
 
         const overlay = document.createElement('div');
@@ -461,10 +451,7 @@ function initQuizSystem() {
           </div>
         `;
         const cardEl = quizCard.querySelector('.quiz-card');
-        if (cardEl) {
-          cardEl.style.position = 'relative';
-          cardEl.appendChild(overlay);
-        }
+        if (cardEl) { cardEl.style.position = 'relative'; cardEl.appendChild(overlay); }
       }
     } else {
       // Belum benar, tampilkan gate
@@ -479,7 +466,8 @@ function initQuizSystem() {
   });
 }
 
-// Global CSS untuk animasi shake
+// ── CSS animasi shake ─────────────────────────────────────────────────────────
+
 const styleEl = document.createElement('style');
 styleEl.textContent = `
   @keyframes quiz-shake {
